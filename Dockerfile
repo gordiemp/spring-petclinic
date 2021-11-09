@@ -1,6 +1,5 @@
 # pull the blue ocean image
-FROM jenkinsci/blueocean 
-FROM ubuntu
+FROM jenkinsci/jenkins:lts
 
 # build the container
 USER root
