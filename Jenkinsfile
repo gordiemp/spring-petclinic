@@ -1,54 +1,96 @@
+def testImage
+def stagingImage
+def productionImage
+def REPOSITORY
+def REPOSITORY_TEST
+def RESPOSITORY_STAGING
+def GIT_COMMIT_HASH
+def INSTANCE_ID
+def ACCOUNT_REGISTRY_PREFIX
+def S3_LOGS
+def DATE_NOW
+
 pipeline {
-  environment {
-    registry = "tyitzhak/spring-petclinic-hub"
-    registryCredential = 'docker-hub'
-    dockerImage = ''
-  }
   agent any
-  tools {
-    maven 'Maven 3.3.9'
-    jdk 'jdk8'
-  } 
   stages {
-    stage('Cloning Git') {
+    stage("Set Up") {
       steps {
-        git 'https://github.com/gordiemp/spring-petclinic-jenkins-pipeline.git'
-      }
-    }
-    stage('Compile') {
-       steps {
-         sh 'mvn compile' //only compilation of the code
-       }
-    }
-    stage('Test') {
-      steps {
-        sh '''
-        mvn clean install
-        ls
-        pwd
-        ''' 
-        //if the code is compiled, we test and package it in its distributable format; run IT and store in local repository
-      }
-    }
-    stage('Building Image') {
-      steps{
+        echo "Logging into the private AWS Elastic Container Registry"
         script {
-          dockerImage = docker.build registry + ":latest"
+          sh """
+          echo "Hello World"
+          """
         }
       }
     }
-    stage('Deploy Image') {
-      steps{
-         script {
-            docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-          }
+    stage("Build Test Image") {
+      steps {
+        echo 'Start building the project docker image for tests'
+        script {
+          sh """
+          echo "Hello World"
+          """
         }
       }
     }
-    stage('Remove Unused docker image') {
-      steps{
-        sh "docker rmi $registry:latest"
+    stage("Run Unit Tests") {
+      steps {
+        echo 'Run unit tests in the docker image'
+        script {
+          sh """
+          echo "Hello World"
+          """
+        }
+      }
+    }
+    stage("Run Integration Tests") {
+      steps {
+        echo 'Run Integration tests in the docker image'
+        script {
+          sh """
+          echo "Hello World"
+          """
+        }
+      }
+    }
+    stage("Build Staging Image") {
+      steps {
+        echo 'Build the staging image for more tests'
+        script {
+          sh """
+          echo "Hello World"
+          """
+        }
+      }
+    }
+    stage("Run Load Balancing tests / Security Checks") {
+      steps {
+        echo 'Run load balancing tests and security checks'
+        script {
+          sh """
+          echo "Hello World"
+          """
+        }
+      }
+    }
+    stage("Deploy to Fixed Server") {
+      steps {
+        echo 'Deploy release to production'
+        script {
+          sh """
+          echo "Hello World"
+          """
+        }
+      }
+    }
+    stage("Clean Up") {
+      steps {
+        echo 'Clean up local docker images'
+        script {
+          sh """
+          echo "Hello World"
+          """
+        }
       }
     }
   }
