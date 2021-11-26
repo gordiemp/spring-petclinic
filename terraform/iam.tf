@@ -50,9 +50,9 @@ resource "aws_iam_role" "jenkins" {
   })
 
   managed_policy_arns = [aws_iam_policy.ecr-access.arn,
-    aws_iam_policy.s3-access.arn,
-    aws_iam_policy.ec2-access.arn,
-  aws_iam_policy.secrets-access.arn]
+                        aws_iam_policy.s3-access.arn,
+                        aws_iam_policy.ec2.arn,
+                        aws_iam_policy.secrets-access.arn]
 
 }
 
@@ -112,8 +112,8 @@ EOF
 
 # Policy: Ec2 Reboot access
 
-resource "aws_iam_policy" "ec2-access" {
-  name   = "ec2-reboot-access"
+resource "aws_iam_policy" "ec2" {
+  name   = "ec2"
   policy = <<EOF
 {
     "Version": "2012-10-17",
