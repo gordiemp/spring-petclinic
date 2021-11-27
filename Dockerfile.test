@@ -1,7 +1,7 @@
-FROM alpine:3.12
+FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
 
-RUN apk update && apk add --no-cache fortune
+COPY . /opt/app
 
-USER 1001
+WORKDIR /opt/app/server
 
-ENTRYPOINT ["fortune"]
+RUN npm i
