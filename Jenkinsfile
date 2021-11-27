@@ -32,7 +32,6 @@ pipeline {
           S3_LOGS = S3_LOGS.trim()
           DATE_NOW = DATE_NOW.trim()
 
-          ACCOUNT_REGISTRY_PREFIX = (REPOSITORY.split("/"))[0]
           
           // Log into ECR
           sh """
