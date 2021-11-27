@@ -26,13 +26,6 @@ pipeline {
           S3_LOGS = sh (script: "cat \$HOME/opt/bucket_name", returnStdout: true)
           DATE_NOW = sh (script: "date +%Y%m%d", returnStdout: true)
 
-          REPOSITORY = REPOSITORY.trim()
-          REPOSITORY_TEST = REPOSITORY_TEST.trim()
-          REPOSITORY_STAGING = REPOSITORY_STAGING.trim()
-          S3_LOGS = S3_LOGS.trim()
-          DATE_NOW = DATE_NOW.trim()
-
-          
           // Log into ECR
           sh """
           /bin/sh -e -c 'echo \$(aws ecr get-login-password --region us-east-1)  | docker login -u AWS --password-stdin $ACCOUNT_REGISTRY_PREFIX'
