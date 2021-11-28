@@ -45,6 +45,8 @@ sudo chown -R jenkins arachni-1.5.1-0.5.12/
 sudo chgrp -R jenkins arachni-1.5.1-0.5.12/
 sudo mv arachni-1.5.1-0.5.12 /var/lib/jenkins/opt
 
+
+
 # Save the instance_id, repositories urls and bucket name to use in the pipeline
 sudo /bin/bash -c "echo ${repository_url} > /var/lib/jenkins/opt/repository_url"
 sudo /bin/bash -c "echo ${repository_test_url} > /var/lib/jenkins/opt/repository_test_url"
@@ -109,4 +111,3 @@ reboot
 # Run the jenkins-docker container, with mount to jenkins_home; on port 8080
 # Relative path was not used in Mount; therefore find command was used to find
 # the full path of the jenkins_home folder
-./mvnw package && java -jar target/gs-spring-boot-docker-0.1.0.jar
