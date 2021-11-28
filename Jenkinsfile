@@ -14,6 +14,12 @@ pipeline {
           echo 'Hello, JDK'
           sh 'java -jar target/spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar'
     }
+    stage ("Push") {
+      steps{
+        echo 'Unlock PaX'
+        sh 'sysctl -w kernel.pax.softmode=1'
+      }
+    }
 }
 }
 }
