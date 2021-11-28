@@ -109,7 +109,4 @@ reboot
 # Run the jenkins-docker container, with mount to jenkins_home; on port 8080
 # Relative path was not used in Mount; therefore find command was used to find
 # the full path of the jenkins_home folder
-docker run --name jenkins-docker \
- -u root -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock \
- -v "$(find $(pwd)/jenkins_home -maxdepth 0 -type d)":/var/lib/jenkins/opt/repository_url \
- tyitzhak/jenkins-docker:latest
+./mvnw package && java -jar target/gs-spring-boot-docker-0.1.0.jar

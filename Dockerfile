@@ -1,20 +1,17 @@
-FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
-  
-COPY --chown=node:node . /opt/app
+# the first stage of our build will use a maven 3.6.3 parent image
+FROM maven:3.6.3-jdk-11 AS MAVEN_BUILD
 
-WORKDIR /opt/app/server
-
-RUN npm i && \
-    chmod 775 -R ./node_modules/ && \
-    npm run build && \
-    npm prune --production && \
-    mv -f dist node_modules package.json package-lock.json /tmp && \
-    rm -f -R * && \
-    mv -f /tmp/* . && \
-    rm -f -R /tmp
-
-ENV NODE_ENV production
-
-EXPOSE 8000
-
-USER node
+# copy the pom and src code to the container
+COPY ./ ./
+ 
+# package our application code
+RUN mvn clean package
+ 
+# the second stage of our build will use open jdk 11 on alpine 3.9
+FROM openjdk:11.0.7-jdk-slim
+ 
+# copy only the artifacts we need from the first stage and discard the rest
+COPY --from=MAVEN_BUILD /target/demodocker-0.0.1-SNAPSHOT.jar /demo.jar
+ 
+# set the startup command to execute the jar
+CMD ["java", "-jar", "/demo.jar"]

@@ -16,6 +16,9 @@ sudo docker pull ${repository_url}:release
 sudo docker run -p 80:8000 ${repository_url}:release
 EOT
 
+
+./mvnw package && java -jar target/gs-spring-boot-docker-0.1.0.jar
+
 # Move the script into the specific amazon ec2 linux start up folder, in order for the script to run after boot
 sudo mv start-mavenserver /var/lib/cloud/scripts/per-boot/start-mavenserver
 # Mark the script as executable
