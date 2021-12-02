@@ -1,6 +1,7 @@
 pipeline {
   agent any
   tools {
+    branch 'main'
     maven 'Maven 3.3.9'
     jdk 'jdk8'
   } 
