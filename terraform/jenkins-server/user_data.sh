@@ -105,9 +105,4 @@ python -c "import sys;import json;print(json.loads(raw_input())['credentials'][0
 #---------------------------------------------#
 
 sudo rm *.sh credentials_id
-
 reboot
-
-# Run the jenkins-docker container, with mount to jenkins_home; on port 8080
-# Relative path was not used in Mount; therefore find command was used to find
-# the full path of the jenkins_home folder
