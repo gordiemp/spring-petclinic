@@ -1,7 +1,6 @@
 pipeline {
   agent any
   tools {
-    branch 'main'
     maven 'Maven 3.3.9'
     jdk 'jdk8'
   } 
@@ -39,6 +38,6 @@ pipeline {
     stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $registry:latest"
-      }
     }
+  }
 }
