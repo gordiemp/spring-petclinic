@@ -4,8 +4,10 @@
 python -c "import sys;import json;print(json.loads(json.loads(raw_input())['SecretString'])['private'])" <<< $(aws secretsmanager get-secret-value --secret-id spr-appv4 --region us-east-1) > ssh_tmp
 
 ssh_private_key=$(awk -v ORS='\\n' '1' ssh_tmp)
+dockerhub_key=$(awk -v ORS='\\n' '1' dockerhub_tmp))
 
 rm ssh_tmp
+rm dockerhub_tmp
 
 cookie_jar="$(mktemp)"
 full_crumb=$(curl -u "$user:$password" --cookie-jar "$cookie_jar" $url/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))

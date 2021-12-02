@@ -23,14 +23,14 @@ sudo systemctl start jenkins
 sudo systemctl enable jenkins
 
 # Start Docker
-sudo systemctl start docker
+#sudo systemctl start docker
 
 # Enable Docker to run on boot
-sudo systemctl enable docker
+#sudo systemctl enable docker
 
 # Let Jenkins and the current user use docker
-sudo usermod -a -G docker ec2-user
-sudo usermod -a -G docker jenkins
+#sudo usermod -a -G docker ec2-user
+#sudo usermod -a -G docker jenkins
 
 # Create the opt folder in the jenkins home
 sudo mkdir /var/lib/jenkins/opt

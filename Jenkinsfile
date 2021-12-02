@@ -1,25 +1,44 @@
 pipeline {
-  agent none
-  stages {
-    stage("Build") {
-    agent {docker 'maven:3.6-jdk-11-slim'} 
+  agent any
+  tools {
+    maven 'Maven 3.3.9'
+    jdk 'jdk8'
+  } 
+    stage('Compile') {
+       steps {
+         sh 'mvn compile' //only compilation of the code
+       }
+    }
+    stage('Test') {
       steps {
-        echo "Hello maven" 
-        sh 'mvn -B -DskipTests clean package'
+        sh '''
+        mvn clean install
+        ls
+        pwd
+        ''' 
+        //if the code is compiled, we test and package it in its distributable format; run IT and store in local repository
       }
     }
-    stage ("Run") {
-      agent { docker 'openjdk:11.0.1-jre-slim-stretch' } 
-      steps {
-          echo 'Hello, JDK'
-          sh 'java -jar target/spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar'
-      }
-    }
-    stage ("Push") {
+    stage('Building Image') {
       steps{
-        echo 'Unlock PaX'
-        sh 'sysctl -w kernel.pax.softmode=1'
+        script {
+          dockerImage = docker.build registry + ":latest"
+        }
       }
     }
-}
+    stage('Deploy Image') {
+      steps{
+         script {
+            docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:latest"
+      }
+    }
+  }
 }
