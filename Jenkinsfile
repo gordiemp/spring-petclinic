@@ -9,7 +9,6 @@ def INSTANCE_ID
 def ACCOUNT_REGISTRY_PREFIX
 def S3_LOGS
 def DATE_NOW
-def SLACK_TOKEN
 def CHANNEL_ID = "<YOUR_CHANNEL_ID>"
 
 pipeline {
@@ -27,16 +26,14 @@ pipeline {
           INSTANCE_ID = sh (script: "cat \$HOME/opt/instance_id", returnStdout: true)
           S3_LOGS = sh (script: "cat \$HOME/opt/bucket_name", returnStdout: true)
           DATE_NOW = sh (script: "date +%Y%m%d", returnStdout: true)
-          
-          // To parse and extract the Slack Token from the JSON response of AWS
-          SLACK_TOKEN = sh (script: "python -c \"import sys;import json;print(json.loads(json.loads(raw_input())['SecretString'])['slackToken'])\" <<< \$(aws secretsmanager get-secret-value --secret-id simple-web-app --region us-east-1)", returnStdout: true)
+    
 
           REPOSITORY = REPOSITORY.trim()
           REPOSITORY_TEST = REPOSITORY_TEST.trim()
           REPOSITORY_STAGING = REPOSITORY_STAGING.trim()
           S3_LOGS = S3_LOGS.trim()
           DATE_NOW = DATE_NOW.trim()
-          SLACK_TOKEN = SLACK_TOKEN.trim()
+
 
           ACCOUNT_REGISTRY_PREFIX = (REPOSITORY.split("/"))[0]
           
@@ -74,33 +71,11 @@ pipeline {
                 mv mochawesome-report /output/unit
               """
             }
-
-            // Fill the slack message with the success message
-            textMessage = "Commit hash: $GIT_COMMIT_HASH -- Has passed unit tests"
-            inError = false
-
-          } catch(e) {
-
-            echo "$e"
-            // Fill the slack message with the failure message
-            textMessage = "Commit hash: $GIT_COMMIT_HASH -- Has failed on unit tests"
-            inError = true
-
-          } finally {
+          } 
+          finally {
 
             // Upload the unit tests results to S3
             sh "aws s3 cp ./unit/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/unit/ --recursive"
-
-            // Send Slack notification with the result of the tests
-            sh"""
-              curl --location --request POST 'https://slack.com/api/chat.postMessage' \
-                    --header 'Authorization: Bearer $SLACK_TOKEN' \
-                    --header 'Content-Type: application/json' \
-                    --data-raw '{
-                        "channel": \"$CHANNEL_ID\",
-                        "text": \"$textMessage\"
-                    }'
-            """ 
             if(inError) {
               // Send an error signal to stop the pipeline
               error("Failed unit tests")
@@ -128,32 +103,12 @@ pipeline {
               """
             }
 
-            // Fill the slack message with the success message
-            textMessage = "Commit hash: $GIT_COMMIT_HASH -- Has passed integration tests"
-            inError = false
-
-          } catch(e) {
-
-            echo "$e"
-            // Fill the slack message with the failure message
-            textMessage = "Commit hash: $GIT_COMMIT_HASH -- Has failed on integration tests"
-            inError = true
-
-          } finally {
+          }
+          finally {
 
             // Upload the unit tests results to S3
             sh "aws s3 cp ./integration/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/integration/ --recursive"
 
-            // Send Slack notification with the result of the tests
-            sh"""
-              curl --location --request POST 'https://slack.com/api/chat.postMessage' \
-                    --header 'Authorization: Bearer $SLACK_TOKEN' \
-                    --header 'Content-Type: application/json' \
-                    --data-raw '{
-                        "channel": \"$CHANNEL_ID\",
-                        "text": \"$textMessage\"
-                    }'
-            """ 
             if(inError) {
               // Send an error signal to stop the pipeline
               error("Failed integration tests")
@@ -196,17 +151,6 @@ pipeline {
           }
           // Upload the Arachni tests' results to S3  
           sh "aws s3 cp ./arachni_report.html.zip s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/"
-
-          // Inform via slack that the Load Balancing and Security checks are completed
-          sh"""
-              curl --location --request POST 'https://slack.com/api/chat.postMessage' \
-                    --header 'Authorization: Bearer $SLACK_TOKEN' \
-                    --header 'Content-Type: application/json' \
-                    --data-raw '{
-                        "channel": \"$CHANNEL_ID\",
-                        "text": "Commit hash: $GIT_COMMIT_HASH -- Load Balancing tests and security checks have finished"
-                    }'
-          """ 
         }
       }
     }
