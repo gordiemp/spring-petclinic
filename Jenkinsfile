@@ -61,8 +61,7 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-                cd /opt/app/server
-                npm run test:unit
+                ./mvnw spring-boot:run
                 # Save reports to be uploaded afterwards
                 if test -d /output/unit ; then
                   rm -R /output/unit
