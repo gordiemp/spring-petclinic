@@ -35,10 +35,6 @@ pipeline {
 
 
           ACCOUNT_REGISTRY_PREFIX = (REPOSITORY.split("/"))[0]
-
-          sh """
-          /bin/sh -c mvn install
-          """
           
           // Log into ECR
           sh """
