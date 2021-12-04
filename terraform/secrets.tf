@@ -1,8 +1,8 @@
-resource "aws_secretsmanager_secret" "spr-aa7" {
-  name = "spr-aa7"
+resource "aws_secretsmanager_secret" "spr-aa8" {
+  name = "spr-aa8"
 }
 
-resource "aws_secretsmanager_secret_version" "spr-aa7" {
-  secret_id     = aws_secretsmanager_secret.spr-aa7.id
+resource "aws_secretsmanager_secret_version" "spr-aa8" {
+  secret_id     = aws_secretsmanager_secret.spr-aa8.id
   secret_string = jsonencode(var.secrets)
 }

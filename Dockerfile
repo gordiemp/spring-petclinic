@@ -1,12 +1,10 @@
-FROM maven:3.6-jdk-11-slim as BUILD
-COPY . /src
-WORKDIR /src
-RUN mvn clean package
+# Alpine Linux with OpenJDK JRE
+FROM openjdk:8-jre-alpine
 
-FROM openjdk:11.0.1-jre-slim-stretch
-WORKDIR /app
-ARG JAR=spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar
+EXPOSE 8181
 
-COPY --from=BUILD /src/target/$JAR /app.jar
-EXPOSE 8000
-CMD ["java","-jar","/app.jar"]
+# copy jar into image
+COPY target/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar /usr/bin/spring-petclinic.jar
+
+# run application with this command line 
+ENTRYPOINT ["java","-jar","/usr/bin/spring-petclinic.jar","--server.port=8181"]

@@ -9,10 +9,13 @@ def INSTANCE_ID
 def ACCOUNT_REGISTRY_PREFIX
 def S3_LOGS
 def DATE_NOW
-def CHANNEL_ID = "<YOUR_CHANNEL_ID>"
 
-pipeline {
+pipeline {   
   agent any
+  tools {
+    maven 'Maven 3.3.9'
+    jdk 'jdk8'
+  }
   stages {
     stage("Set Up") {
       steps {
@@ -73,7 +76,6 @@ pipeline {
             }
           } 
           finally {
-
             // Upload the unit tests results to S3
             sh "aws s3 cp ./unit/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/unit/ --recursive"
             if(inError) {
