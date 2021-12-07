@@ -1,9 +1,14 @@
 #! /bin/bash
 
 # Retrieve Secrets and Extract the Private key using a python command
+<<<<<<< HEAD
 python -c "import sys;import json;print(json.loads(json.loads(raw_input())['SecretString'])['private'])" <<< $(aws secretsmanager get-secret-value --secret-id simple-web-app --region us-east-1) > ssh_tmp
 
 # Correctly parse the new line characters and store the key in a variable
+=======
+#python -c "import sys;import json;print(json.loads(json.loads(raw_input())['SecretString'])['private'])" <<< $(aws secretsmanager get-secret-value --secret-id simple-web-app --region us-east-1) > ssh_tmp
+
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 ssh_private_key=$(awk -v ORS='\\n' '1' ssh_tmp)
 
 rm ssh_tmp
@@ -32,4 +37,8 @@ curl -u "$user:$password" -X POST "$url/credentials/store/system/domain/_/create
     'stapler-class': 'com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey',
   },
   'Jenkins-Crumb': '$only_crumb'
+<<<<<<< HEAD
 }"
+=======
+}"
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc

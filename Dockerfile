@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # pull the blue ocean image
 FROM jenkinsci/jenkins:lts
 
@@ -30,3 +31,9 @@ EXPOSE 8000
 # remove download archive files
 RUN apt-get clean
 
+=======
+FROM openjdk:11-jre-slim
+COPY --from=build /home/app/target/demo-0.0.1-SNAPSHOT.jar /usr/local/lib/demo.jar
+EXPOSE 8081
+ENTRYPOINT ["java","-jar","/usr/local/lib/demo.jar"]
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc

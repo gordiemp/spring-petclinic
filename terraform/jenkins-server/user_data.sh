@@ -1,5 +1,6 @@
 #! /bin/bash
 
+<<<<<<< HEAD
 sudo amazon-linux-extras install epel -y 
 
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
@@ -18,13 +19,33 @@ sudo systemctl daemon-reload
 sudo yum install epel-release
 sudo yum install python-pip python-devel git -y
 sudo yum install ansible -y
+=======
+sudo yum update -y
+
+# Install git
+sudo amazon-linux-extras install epel -y 
+sudo yum install -y git
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+sudo yum upgrade -y
+sudo yum install jenkins java-1.8.0-openjdk-devel -y
+sudo systemctl daemon-reload
+
+# Installing Docker
+sudo amazon-linux-extras install docker
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 
 # Start Jenkins
 sudo systemctl start jenkins
 
 # Enable jenkins to run on boot
 sudo systemctl enable jenkins
+<<<<<<< HEAD
 sudo systemctl status jenkins
+=======
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 
 # Start Docker
 sudo systemctl start docker
@@ -35,6 +56,10 @@ sudo systemctl enable docker
 # Let Jenkins and the current user use docker
 sudo usermod -a -G docker ec2-user
 sudo usermod -a -G docker jenkins
+<<<<<<< HEAD
+=======
+sudo chmod 666 /var/run/docker.sock
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 
 # Create the opt folder in the jenkins home
 sudo mkdir /var/lib/jenkins/opt
@@ -49,6 +74,11 @@ sudo chown -R jenkins arachni-1.5.1-0.5.12/
 sudo chgrp -R jenkins arachni-1.5.1-0.5.12/
 sudo mv arachni-1.5.1-0.5.12 /var/lib/jenkins/opt
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 # Save the instance_id, repositories urls and bucket name to use in the pipeline
 sudo /bin/bash -c "echo ${repository_url} > /var/lib/jenkins/opt/repository_url"
 sudo /bin/bash -c "echo ${repository_test_url} > /var/lib/jenkins/opt/repository_test_url"
@@ -107,5 +137,8 @@ python -c "import sys;import json;print(json.loads(raw_input())['credentials'][0
 #---------------------------------------------#
 
 sudo rm *.sh credentials_id
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 reboot

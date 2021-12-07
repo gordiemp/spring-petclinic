@@ -36,4 +36,8 @@ variable "job-name" {
 
 variable "secrets" {
   type = map(string)
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc

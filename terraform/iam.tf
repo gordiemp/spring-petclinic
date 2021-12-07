@@ -25,7 +25,11 @@ resource "aws_iam_role" "spring-petclinic" {
   managed_policy_arns = [aws_iam_policy.ecr-access.arn]
 }
 
+<<<<<<< HEAD
 # Jenkins 
+=======
+# Jenkins
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 
 resource "aws_iam_instance_profile" "jenkins" {
   name = "jenkins"
@@ -49,6 +53,7 @@ resource "aws_iam_role" "jenkins" {
     ]
   })
 
+<<<<<<< HEAD
     managed_policy_arns = [ aws_iam_policy.ecr-access.arn,
                           aws_iam_policy.s3-access.arn,
                           aws_iam_policy.ec2-access.arn,
@@ -76,12 +81,23 @@ resource "aws_iam_policy" "ec2-access" {
     ]
 }
 EOF
+=======
+  managed_policy_arns = [aws_iam_policy.ecr-access.arn,
+                        aws_iam_policy.s3-access.arn,
+                        aws_iam_policy.ec2.arn,
+                        aws_iam_policy.secrets-access.arn]
+
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 }
 
 # Policy: ECR access --> AmazonEC2ContainerRegistryPowerUser
 
 resource "aws_iam_policy" "ecr-access" {
+<<<<<<< HEAD
   name = "ecr-access"
+=======
+  name   = "ecr-access"
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
   policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -130,7 +146,33 @@ resource "aws_iam_policy" "s3-access" {
     ]
 }
 EOF
+<<<<<<< HEAD
 } 
+=======
+}
+
+# Policy: Ec2 Reboot access
+
+resource "aws_iam_policy" "ec2" {
+  name   = "ec2"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:RebootInstances",
+                "ec2:StartInstances",
+                "ec2:StopInstances"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+}
+>>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 
 # Policy: Secrets Access
 
