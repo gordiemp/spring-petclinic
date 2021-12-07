@@ -1,4 +1,5 @@
 resource "aws_instance" "default" {
+
   ami = var.ami-id
   iam_instance_profile = var.iam-instance-profile
   instance_type = var.instance-type
@@ -10,6 +11,7 @@ resource "aws_instance" "default" {
 
   user_data = templatefile( 
   "${path.module}/user_data.sh", 
+  
   {    
   repository_url = var.repository-url,    
   repository_test_url = var.repository-test-url,    
@@ -24,7 +26,7 @@ resource "aws_instance" "default" {
   remote_repo = var.remote-repo,    
   job_name = var.job-name,    
   job_id = var.job-id,    
-  bucket_config_name = var.bucket-config-name
+  bucket_config_name = var.bucket-config-name,
   }
 )
   tags = {

@@ -109,6 +109,3 @@ python -c "import sys;import json;print(json.loads(raw_input())['credentials'][0
 sudo rm *.sh credentials_id
 
 reboot
-
-
-

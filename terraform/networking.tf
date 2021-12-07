@@ -196,4 +196,3 @@ resource "aws_eip" "spring-petclinic" {
     aws_internet_gateway.spring-petclinic
   ]
 }
-

@@ -9,9 +9,8 @@ def INSTANCE_ID
 def ACCOUNT_REGISTRY_PREFIX
 def S3_LOGS
 def DATE_NOW
-def CHANNEL_ID = "<YOUR_CHANNEL_ID>"
 
-pipeline {
+pipeline {   
   agent any
   stages {
     stage("Set Up") {
@@ -26,12 +25,14 @@ pipeline {
           INSTANCE_ID = sh (script: "cat \$HOME/opt/instance_id", returnStdout: true)
           S3_LOGS = sh (script: "cat \$HOME/opt/bucket_name", returnStdout: true)
           DATE_NOW = sh (script: "date +%Y%m%d", returnStdout: true)
+    
 
           REPOSITORY = REPOSITORY.trim()
           REPOSITORY_TEST = REPOSITORY_TEST.trim()
           REPOSITORY_STAGING = REPOSITORY_STAGING.trim()
           S3_LOGS = S3_LOGS.trim()
           DATE_NOW = DATE_NOW.trim()
+
 
           ACCOUNT_REGISTRY_PREFIX = (REPOSITORY.split("/"))[0]
           
@@ -60,8 +61,7 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-                cd /opt/app/server
-                npm run test:unit
+                ./mvnw spring-boot:run
                 # Save reports to be uploaded afterwards
                 if test -d /output/unit ; then
                   rm -R /output/unit
@@ -69,17 +69,10 @@ pipeline {
                 mv mochawesome-report /output/unit
               """
             }
-
-          } catch(e) {
-
-
-          } finally {
-
+          } 
+          finally {
             // Upload the unit tests results to S3
             sh "aws s3 cp ./unit/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/unit/ --recursive"
-
-                    }
-            """ 
             if(inError) {
               // Send an error signal to stop the pipeline
               error("Failed unit tests")
@@ -107,16 +100,12 @@ pipeline {
               """
             }
 
-
-
-          } catch(e) {
-
-          } finally {
+          }
+          finally {
 
             // Upload the unit tests results to S3
             sh "aws s3 cp ./integration/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/integration/ --recursive"
-                    }'
-            """ 
+
             if(inError) {
               // Send an error signal to stop the pipeline
               error("Failed integration tests")
@@ -159,8 +148,6 @@ pipeline {
           }
           // Upload the Arachni tests' results to S3  
           sh "aws s3 cp ./arachni_report.html.zip s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/"
-                    }'
-          """ 
         }
       }
     }

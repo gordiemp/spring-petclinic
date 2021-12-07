@@ -5,7 +5,7 @@ module "deployment-server" {
 
   iam-instance-profile = aws_iam_instance_profile.spring-petclinic.id
   key-pair             = aws_key_pair.spring-petclinic-key.key_name
-  name                 = "Spring Petclinic"
+  name                 = "Petclinic"
   device-index         = 0
   network-interface-id = aws_network_interface.spring-petclinic.id
   repository-url       = aws_ecr_repository.spring-petclinic.repository_url
