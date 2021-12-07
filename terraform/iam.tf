@@ -1,4 +1,4 @@
-# Web App 
+# App 
 
 resource "aws_iam_instance_profile" "spring-petclinic" {
   name = "spring-petclinic"
@@ -25,11 +25,8 @@ resource "aws_iam_role" "spring-petclinic" {
   managed_policy_arns = [aws_iam_policy.ecr-access.arn]
 }
 
-<<<<<<< HEAD
+
 # Jenkins 
-=======
-# Jenkins
->>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
 
 resource "aws_iam_instance_profile" "jenkins" {
   name = "jenkins"

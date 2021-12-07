@@ -4,11 +4,7 @@ module "jenkins" {
   ami-id                 = "ami-0742b4e673072066f" # AMI for an Amazon Linux instance for region: us-east-1
   iam-instance-profile   = aws_iam_instance_profile.jenkins.name
   key-pair               = aws_key_pair.jenkins-key.key_name
-<<<<<<< HEAD
   name                   = "Jenkins"
-=======
-  name                   = "jenkins"
->>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
   device-index           = 0
   network-interface-id   = aws_network_interface.jenkins.id
   repository-url         = aws_ecr_repository.spring-petclinic.repository_url
@@ -25,11 +21,4 @@ module "jenkins" {
   remote-repo            = var.remote-repo
   job-name               = var.job-name
   job-id                 = random_id.job-id.id
-<<<<<<< HEAD
 }
-=======
-}
-
-
-
->>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
