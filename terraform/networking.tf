@@ -1,6 +1,6 @@
 # 1. Create a VPC
 resource "aws_vpc" "spring-petclinic" {
-  cidr_block           = "10.0.0.0/16" // completely private 10.0 are fixed
+  cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
 
   tags = {
