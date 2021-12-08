@@ -61,7 +61,9 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-                ./mvnw spring-boot:run
+                cd spring-petclinic
+                ./mvnw package
+                java -jar target/*.jar
                 # Save reports to be uploaded afterwards
                 if test -d /output/unit ; then
                   rm -R /output/unit

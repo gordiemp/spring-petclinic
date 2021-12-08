@@ -13,8 +13,4 @@ curl -X POST -u "$user:$password" $url/setupWizard/configureInstance \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   -H 'Accept-Language: en,en-US;q=0.9,it;q=0.8' \
   --cookie $cookie_jar \
-<<<<<<< HEAD
   --data-raw "rootUrl=$url_urlEncoded%2F&Jenkins-Crumb=$only_crumb&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$only_crumb%22%7D&core%3Aapply=&Submit=Save&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$only_crumb%22%7D"
-=======
-  --data-raw "rootUrl=$url_urlEncoded%2F&Jenkins-Crumb=$only_crumb&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$only_crumb%22%7D&core%3Aapply=&Submit=Save&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$only_crumb%22%7D"
->>>>>>> 6efa5fa3e2d1cad0a234ae0484939eb4e74023dc
