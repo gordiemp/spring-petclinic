@@ -52,6 +52,15 @@ pipeline {
         } 
       }
     }
+    stage("Package stage"){
+      steps{
+        echo'Start package the project'
+        script {
+          testImage = docker.build("$REPOSITORY:$GIT_COMMIT_HASH", "-f ./Dockerfile --tag springpetclinic:latest1 .")
+          testImage.push()
+        }
+      }
+    }
     stage("Run Unit Tests") {
       steps {
         echo 'Run unit tests in the docker image'
