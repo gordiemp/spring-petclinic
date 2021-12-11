@@ -1,5 +1,5 @@
 #Build stage
 FROM zelenjyslonik/spring-petclinic:latest1
 EXPOSE 8181
-COPY  --from=build /home/app/target/spring-petclinic-2.5.0-SNAPSHOT.jar /usr/local/lib/spring-petclinic-2.5.0-SNAPSHOT.jar 
 ENTRYPOINT ["java","-jar","/usr/local/lib/spring-petclinic-2.5.0-SNAPSHOT.jar", "-Dserver.port=8181"]
+RUN docker run -i -t --rm -p 8181:8181 zelenjyslonik/spring-petclinic:latest2
