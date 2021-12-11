@@ -18,14 +18,9 @@ pipeline {
   }
   agent any
   stages {
-    stage('Cloning Git') {
-      steps {
-        git 'https://github.com/gordiemp/spring-petclinic.git'
-      }
-    }
     stage('Compile') {
         script {
-          testImage = docker.build("$REPOSITORY_TEST:$GIT_COMMIT_HASH", "-f ./Dockerfile .")
+          testImage = docker.build("-f ./Dockerfile .")
           testImage.push()
         } 
     }
