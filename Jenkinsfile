@@ -61,7 +61,7 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-            mvn test
+            mvn test -Dcheckstyle.skip
 
             # Save reports to be uploaded afterwards
             if test -d /output/unit ; then
