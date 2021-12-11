@@ -61,7 +61,7 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-            docker run -i -t --rm -p zelenjyslonik/springpetclinic:latest1
+            docker run -i -t --rm zelenjyslonik/spring-petclinic:latest1
               """
             }
           } 
