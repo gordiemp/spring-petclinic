@@ -9,22 +9,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/gordiemp/spring-petclinic'
-      }
-    }
-    stage('Compile') {
-       steps {
-         sh 'mvn compile' //only compilation of the code
-       }
-    }
-    stage('Test') {
-      steps {
-        sh '''
-        mvn clean install
-        ls
-        pwd
-        ''' 
-        //if the code is compiled, we test and package it in its distributable format; run IT and store in local repository
+        git 'https://github.com/gordiemp/spring-petclinic.git'
       }
     }
     stage('Building Image') {
