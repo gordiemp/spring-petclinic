@@ -56,6 +56,7 @@ pipeline {
       steps {
         echo 'Run unit tests in the docker image'
         script {
+          try {
             testImage{
             sh """
             mvn test -Dcheckstyle.skip
@@ -68,7 +69,7 @@ pipeline {
               """
             }
           } 
-          try {
+          finally {
             // Upload the unit tests results to S3
             sh "aws s3 cp ./unit/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/unit/ --recursive"
             if(inError) {
@@ -184,4 +185,5 @@ pipeline {
         }
       }
     }
+  }
 }
