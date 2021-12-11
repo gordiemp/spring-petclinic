@@ -61,8 +61,13 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-            ./mvnw package
-            java -jar target/*.jar
+            mvn test
+
+            # Save reports to be uploaded afterwards
+            if test -d /output/unit ; then
+            rm -R /output/unit
+            fi
+            mv mochawesome-report /output/unit
               """
             }
           } 
