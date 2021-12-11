@@ -59,7 +59,7 @@ pipeline {
           def textMessage
           def inError
           try {
-            testImage.inside('-v $WORKSPACE -u root') {
+            testImage.inside('/var/lib/jenkins/workspace/CI-CD_Pipeline') {
               sh """
             mvn test -Dcheckstyle.skip
               """
