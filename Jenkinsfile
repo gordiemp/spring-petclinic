@@ -59,7 +59,7 @@ pipeline {
           def textMessage
           def inError
           try {
-            testImage.inside('-v $WORKSPACE:/output -u root') {
+            testImage.inside('-v $WORKSPACE -u root') {
               sh """
             mvn test -Dcheckstyle.skip
               """
