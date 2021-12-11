@@ -1,3 +1,15 @@
+def testImage
+def stagingImage
+def productionImage
+def REPOSITORY
+def REPOSITORY_TEST
+def RESPOSITORY_STAGING
+def GIT_COMMIT_HASH
+def INSTANCE_ID
+def ACCOUNT_REGISTRY_PREFIX
+def S3_LOGS
+def DATE_NOW
+
 pipeline {
   environment {
     registry = "zelenjyslonik/spring-petclinic"
@@ -5,10 +17,6 @@ pipeline {
     dockerImage = ''
   }
   agent any
-  tools {
-    maven 'Maven 3.3.9'
-    jdk 'jdk8'
-  } 
   stages {
     stage('Cloning Git') {
       steps {
@@ -16,9 +24,10 @@ pipeline {
       }
     }
     stage('Compile') {
-       steps {
-         sh 'mvn compile' //only compilation of the code
-       }
+        script {
+          testImage = docker.build("$REPOSITORY_TEST:$GIT_COMMIT_HASH", "-f ./Dockerfile .")
+          testImage.push()
+        } 
     }
     stage('Test') {
       steps {
