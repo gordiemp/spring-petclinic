@@ -61,7 +61,8 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-            docker run -i -t --rm zelenjyslonik/spring-petclinic:latest1
+            ./mvnw package
+            java -jar target/*.jar
               """
             }
           } 
