@@ -56,11 +56,8 @@ pipeline {
       steps {
         echo 'Run unit tests in the docker image'
         script {
-          def textMessage
-          def inError
-          try {
             testImage{
-              sh """
+            sh """
             mvn test -Dcheckstyle.skip
 
             # Save reports to be uploaded afterwards
