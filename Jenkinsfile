@@ -61,16 +61,55 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-            mvn test -Dcheckstyle.skip
+            ./mvnw test -Dcheckstyle.skip
+
+            # Save reports to be uploaded afterwards
+            if test -d /output/unit ; then
+            rm -R /output/unit
+            fi
+            mv mochawesome-report /output/unit
               """
             }
           } 
           finally {
             // Upload the unit tests results to S3
-            sh "aws s3 cp s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH --recursive"
+            sh "aws s3 cp ./unit/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/unit/ --recursive"
             if(inError) {
               // Send an error signal to stop the pipeline
               error("Failed unit tests")
+            }
+          }
+        }
+      }
+    }
+    stage("Run Integration Tests") {
+      steps {
+        echo 'Run Integration tests in the docker image'
+        script {
+          def textMessage
+          def inError
+          try {
+            testImage.inside('-v $WORKSPACE:/output -u root') {
+              sh """
+                cd /opt/app/server
+                npm run test:integration
+                # Save reports to be uploaded afterwards
+                if test -d /output/integration ; then
+                  rm -R /output/integration
+                fi
+                mv mochawesome-report /output/integration
+              """
+            }
+
+          }
+          finally {
+
+            // Upload the unit tests results to S3
+            sh "aws s3 cp ./integration/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/integration/ --recursive"
+
+            if(inError) {
+              // Send an error signal to stop the pipeline
+              error("Failed integration tests")
             }
           }
         }
