@@ -52,15 +52,6 @@ pipeline {
         } 
       }
     }
-    stage("Package stage"){
-      steps{
-        echo'Start package the project'
-        script {
-          testImage = docker.build("$REPOSITORY:$GIT_COMMIT_HASH", "-f ./Dockerfile --tag springpetclinic:latest1 .")
-          testImage.push()
-        }
-      }
-    }
     stage("Run Unit Tests") {
       steps {
         echo 'Run unit tests in the docker image'
@@ -70,14 +61,7 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-                cd spring-petclinic
-                ./mvnw package
-                java -jar target/*.jar
-                # Save reports to be uploaded afterwards
-                if test -d /output/unit ; then
-                  rm -R /output/unit
-                fi
-                mv mochawesome-report /output/unit
+            docker run -i -t --rm -p zelenjyslonik/springpetclinic:latest1
               """
             }
           } 

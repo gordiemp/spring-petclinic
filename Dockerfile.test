@@ -2,4 +2,3 @@
 FROM zelenjyslonik/spring-petclinic:latest1
 EXPOSE 8181
 ENTRYPOINT ["java","-jar","/usr/local/lib/spring-petclinic-2.5.0-SNAPSHOT.jar", "-Dserver.port=8181"]
-RUN docker run -i -t --rm -p 8181:8181 zelenjyslonik/spring-petclinic:latest2
