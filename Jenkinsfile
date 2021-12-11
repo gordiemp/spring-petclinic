@@ -1,5 +1,6 @@
 
-pipeline {
+pipeline{
+agent any
   environment {
     registry = "zelenjyslonik/spring-petclinic"
     registryCredential = 'docker-hub'
