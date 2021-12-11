@@ -31,17 +31,5 @@ curl -u "$user:$password" -X POST "$url/credentials/store/system/domain/_/create
     },
     'stapler-class': 'com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey',
   },
-    'Jenkins-Crumb': '$only_crumb'
-
-curl -u "$user:$password" -X POST "$url/credentials/store/system/domain/_/createCredentials" \
-  -H "$full_crumb" \
-  --cookie $cookie_jar \
-  --data-urlencode "json={
-  '': '3',
-  'credentials': {
-    'scope': 'GLOBAL',
-    'id': 'dockerhub_id',
-    'username': 'zelenjyslonik',
-    'password': 'Maxgord955',
-    'description': 'Dockerhub Account',
+  'Jenkins-Crumb': '$only_crumb'
 }"
