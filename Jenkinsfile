@@ -5,10 +5,14 @@ pipeline {
     dockerImage = ''
   }
   agent any
+  tools {
+    maven 'Maven 3.3.9'
+    jdk 'jdk8'
+  } 
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/talitz/spring-petclinic-jenkins-pipeline.git'
+        git 'https://github.com/gordiemp/spring-petclinic.git'
       }
     }
     stage('Compile') {
