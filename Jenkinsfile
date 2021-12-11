@@ -68,7 +68,7 @@ pipeline {
               """
             }
           } 
-          finally {
+          try {
             // Upload the unit tests results to S3
             sh "aws s3 cp ./unit/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/unit/ --recursive"
             if(inError) {
