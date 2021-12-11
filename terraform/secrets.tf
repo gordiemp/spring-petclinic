@@ -1,8 +1,8 @@
-resource "aws_secretsmanager_secret" "maven13fqf22212" {
-  name = "maven13fqf22212"
+resource "aws_secretsmanager_secret" "maven13fqf222121" {
+  name = "maven13fqf222121"
 }
 
-resource "aws_secretsmanager_secret_version" "maven13fqf22212" {
-  secret_id     = aws_secretsmanager_secret.maven13fqf22212.id
+resource "aws_secretsmanager_secret_version" "maven13fqf222121" {
+  secret_id     = aws_secretsmanager_secret.maven13fqf222121.id
   secret_string = jsonencode(var.secrets)
 }
