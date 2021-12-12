@@ -61,20 +61,19 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-            ./mvnw test -Dcheckstyle.skip
+            ./mvnw test -Dcheckstyle.skip -DoutputFile /src/test/java/org/springframework/samples/petclinic/system
 
             # Save reports to be uploaded afterwards
-            if test -d /output/unit ; then
-            rm -R /output/unit
+            if test -d /src/test/java/org/springframework/samples/petclinic/system ; then
+            rm -R /src/test/java/org/springframework/samples/petclinic/system
             fi
-            mv mochawesome-report /output/unit
-            yum update
+            mv mochawesome-report /src/test/java/org/springframework/samples/petclinic/system
                  """
             }
           } 
           finally {
             // Upload the unit tests results to S3
-            sh "aws s3 cp ./unit/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/unit/ --recursive"
+            sh "aws s3 cp ./s/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/src/test/java/org/springframework/samples/petclinic/system --recursive"
             if(inError) {
               // Send an error signal to stop the pipeline
               error("Failed unit tests")

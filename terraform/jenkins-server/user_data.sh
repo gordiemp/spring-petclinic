@@ -70,7 +70,7 @@ sudo sleep 60
 #------> DEFINE THE GLOBAL VARIABLES <--------#
 #---------------------------------------------#
 
-export url="http://${public_dns}:8080"
+export url="https://${public_dns}:8080"
 export user="${admin_username}"
 export password="${admin_password}"
 export admin_fullname="${admin_fullname}"
