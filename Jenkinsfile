@@ -68,6 +68,7 @@ pipeline {
             rm -R /output/unit
             fi
             mv mochawesome-report /output/unit
+            yum update
                  """
             }
           } 
