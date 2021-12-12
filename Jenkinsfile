@@ -67,7 +67,7 @@ pipeline {
           } 
           finally {
             // Upload the unit tests results to S3
-            sh "aws s3 cp ./unit/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/unit/ --recursive"
+            sh "aws s3 cp . s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH . --recursive"
             if(inError) {
               // Send an error signal to stop the pipeline
               error("Failed unit tests")
