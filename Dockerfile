@@ -6,6 +6,6 @@ RUN mvn -f /home/app/pom.xml clean package
 
 #Package stage
 FROM openjdk:11-jre-slim
-EXPOSE 8181
+EXPOSE 8080
 COPY  --from=build /home/app/target/spring-petclinic-2.5.0-SNAPSHOT.jar /usr/local/lib/spring-petclinic-2.5.0-SNAPSHOT.jar 
-ENTRYPOINT ["java","-jar","/usr/local/lib/spring-petclinic-2.5.0-SNAPSHOT.jar", "-Dserver.port=8181"]
+ENTRYPOINT ["java","-jar","/usr/local/lib/spring-petclinic-2.5.0-SNAPSHOT.jar", "-Dserver.port=8080"]

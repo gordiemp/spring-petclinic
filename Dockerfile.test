@@ -1,4 +1,11 @@
-#Build stage
-FROM zelenjyslonik/spring-petclinic:latest1
-EXPOSE 8181
-ENTRYPOINT ["java","-jar","/usr/local/lib/spring-petclinic-2.5.0-SNAPSHOT.jar", "-Dserver.port=8181"]
+FROM openjdk:16-alpine3.13 as base
+
+WORKDIR /app
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+COPY src ./src
+
+FROM base as test
+CMD ["./mvnw", "test"]

@@ -62,13 +62,7 @@ pipeline {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
             ./mvnw test -Dcheckstyle.skip
-
-            # Save reports to be uploaded afterwards
-            if test -d /output/unit ; then
-            rm -R /output/unit
-            fi
-            mv mochawesome-report /output/unit
-              """
+                 """
             }
           } 
           finally {
