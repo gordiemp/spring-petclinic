@@ -62,12 +62,18 @@ pipeline {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
             ./mvnw test -Dcheckstyle.skip
+
+            # Save reports to be uploaded afterwards
+            if test -d /output/unit ; then
+            rm -R /output/unit
+            fi
+            mv mochawesome-report /output/unit
                  """
             }
           } 
           finally {
             // Upload the unit tests results to S3
-            sh "aws s3 cp . s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH . --recursive"
+            sh "aws s3 cp ./unit/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/unit/ --recursive"
             if(inError) {
               // Send an error signal to stop the pipeline
               error("Failed unit tests")
