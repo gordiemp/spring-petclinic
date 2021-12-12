@@ -47,7 +47,7 @@ pipeline {
       steps {
         echo 'Start building the project docker image for tests' 
         script {
-          testImage = docker.build("$REPOSITORY_TEST:$GIT_COMMIT_HASH", "-f ./Dockerfile.test .")
+          testImage = docker.build("$REPOSITORY_TEST:$GIT_COMMIT_HASH", "--tag java-petclinic --target test -f ./Dockerfile.test .")
           testImage.push()
         } 
       }
