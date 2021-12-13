@@ -68,7 +68,6 @@ pipeline {
             rm -R /target/surefire-reports/
             fi
             mv mochawesome-report /target/surefire-reports/
-            yum update
                  """
             }
           } 
