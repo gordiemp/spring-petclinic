@@ -8,4 +8,4 @@ RUN ./mvnw dependency:go-offline
 COPY src ./src
 
 FROM base as test
-CMD ["./mvnw", "test" "-Dcheckstyle.skip"]
+CMD ["./mvnw", "test", "-Dcheckstyle.skip"]

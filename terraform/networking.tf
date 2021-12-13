@@ -41,7 +41,7 @@ resource "aws_subnet" "subnet-public-jenkins" {
   }
 }
 
-# 4.2 Create Subnet - Simple Web App
+# 4.2 Create Subnet - Spring Petclinic
 
 resource "aws_subnet" "subnet-public-spring-petclinic" {
   cidr_block        = "10.0.3.0/24"
@@ -60,7 +60,7 @@ resource "aws_route_table_association" "jenkins-subnet" {
   route_table_id = aws_route_table.allow-outgoing-access.id
 }
 
-# 5.2 Create a Route Table Association --> associate Simple Web App subnet to route table
+# 5.2 Create a Route Table Association --> associate Spring Petclinic subnet to route table
 
 resource "aws_route_table_association" "spring-petclinic" {
   subnet_id      = aws_subnet.subnet-public-spring-petclinic.id
@@ -165,7 +165,7 @@ resource "aws_network_interface" "jenkins" {
   aws_security_group.allow-staging-traffic.id]
 }
 
-# 7.2 Create a Network Interface for Simple Web App
+# 7.2 Create a Network Interface for Spring Petclinic
 
 resource "aws_network_interface" "spring-petclinic" {
   subnet_id   = aws_subnet.subnet-public-spring-petclinic.id
@@ -186,7 +186,7 @@ resource "aws_eip" "jenkins" {
   ]
 }
 
-# 8.2 Assign an Elastic IP to the Network Interface of Simple Web App
+# 8.2 Assign an Elastic IP to the Network Interface of Spring Petclinic
 
 resource "aws_eip" "spring-petclinic" {
   vpc                       = true

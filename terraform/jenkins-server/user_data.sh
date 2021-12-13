@@ -35,8 +35,8 @@ sudo chmod 666 /var/run/docker.sock
 
 # Create the opt folder in the jenkins home
 sudo mkdir /var/lib/jenkins/opt
-sudo chown jenkins /var/lib/jenkins/opt
-sudo chgroup jenkins /var/lib/jenkins/opt
+sudo chown -R jenkins /var/lib/jenkins/opt
+sudo chgrp -R  jenkins /var/lib/jenkins/opt
 
 # Download and install arachni as jenkins user
 wget https://github.com/Arachni/arachni/releases/download/v1.5.1/arachni-1.5.1-0.5.12-linux-x86_64.tar.gz 
