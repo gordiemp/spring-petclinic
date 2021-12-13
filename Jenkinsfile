@@ -61,13 +61,13 @@ pipeline {
           try {
             testImage.inside('-v $WORKSPACE:/output -u root') {
               sh """
-            ./mvnw test -Dcheckstyle.skip
+            ./mvnw clean verify -Dcheckstyle.skip > verify.txt
 
             # Save reports to be uploaded afterwards
-            if test -d /target/surefire-reports/ ; then
-            rm -R /target/surefire-reports/
+            if test -d /$WORKSPACE/verify.txt ; then
+            rm -R /$WORKSPACE/verify.txt
             fi
-            mv mochawesome-report /target/surefire-reports/
+            mv mochawesome-report /$WORKSPACE/verify.txt
                  """
             }
           } 
