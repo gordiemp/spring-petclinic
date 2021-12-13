@@ -52,94 +52,11 @@ pipeline {
         } 
       }
     }
-    stage("Run Unit Tests") {
-      steps {
-        echo 'Run unit tests in the docker image'
-        script {
-          def textMessage
-          def inError
-          try {
-            testImage.inside('-v $WORKSPACE:/output -u root') {
-              sh """
-            ./mvnw clean verify -Dcheckstyle.skip > verify.txt
-
-            # Save reports to be uploaded afterwards
-            if test -d /$WORKSPACE/verify.txt ; then
-            rm -R /$WORKSPACE/verify.txt
-            fi
-            mv mochawesome-report /$WORKSPACE/verify.txt
-                 """
-            }
-          } 
-          finally {
-            // Upload the unit tests results to S3
-            sh "aws s3 cp ./surefire-reports/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/surefire-reports/ --recursive"
-            if(inError) {
-              // Send an error signal to stop the pipeline
-              error("Failed unit tests")
-            }
-          }
-        }
-      }
-    }
-    stage("Run Integration Tests") {
-      steps {
-        echo 'Run Integration tests in the docker image'
-        script {
-          def textMessage
-          def inError
-          try {
-            testImage.inside('-v $WORKSPACE:/output -u root') {
-              sh """
-                cd /opt/app/server
-                npm run test:integration
-                # Save reports to be uploaded afterwards
-                if test -d /output/integration ; then
-                  rm -R /output/integration
-                fi
-                mv mochawesome-report /output/integration
-              """
-            }
-
-          }
-          finally {
-
-            // Upload the unit tests results to S3
-            sh "aws s3 cp ./integration/ s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/integration/ --recursive"
-
-            if(inError) {
-              // Send an error signal to stop the pipeline
-              error("Failed integration tests")
-            }
-          }
-        }
-      }
-    }
-    stage("Build Staging Image") {
-      steps {
-        echo 'Build the staging image for more tests'
-        script {
-          stagingImage = docker.build("$REPOSITORY_STAGING:$GIT_COMMIT_HASH")
-          stagingImage.push()
-        }
-      }
-    }
     stage("Run Load Balancing tests / Security Checks") {
       steps {
         echo 'Run load balancing tests and security checks'
         script {
-          stagingImage.inside('-v $WORKSPACE:/output -u root') {
-            sh """
-            cd /opt/app/server
-            npm rm loadtest
-            npm i loadtest
-            npm run test:load > /output/load_test.txt
-            """
-          }
-          // Upload the load test results to S3
-          sh "aws s3 cp ./load_test.txt s3://$S3_LOGS/$DATE_NOW/$GIT_COMMIT_HASH/"
-
-          stagingImage.withRun('-p 8000:8000 -u root'){
+          testImage.withRun('-p 8000:8000 -u root'){
             sh """
             # run arachni to check for common vulnerabilities
             \$HOME/opt/arachni-1.5.1-0.5.12/bin/arachni http://\$(hostname):8000 --check=xss,code_injection --report-save-path=simple-web-app.com.afr
