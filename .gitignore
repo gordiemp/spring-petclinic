@@ -15,7 +15,7 @@ _site/
 .terraform*
 *.tfstate*
 *.tfvars
-
+*secrets.tf
 
 # Keys
 *.key
